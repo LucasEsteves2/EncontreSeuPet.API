@@ -25,7 +25,7 @@ public class Notificacao {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 256)
     private String mensagem;
 
     @Column(nullable = false, name = "data_envio")
