@@ -1,7 +1,7 @@
-# 🔒 RPA Bloqueio de Apostas
+# 🧱 API Bloqueio de Apostas
 
-Projeto RPA desenvolvido em **Spring Boot** para **bloqueio automatizado de sites de apostas**, criado como parte da **pós-graduação em Arquitetura de Software do Infnet**.  
-O sistema tem como objetivo oferecer uma solução automatizada que identifica e bloqueia tentativas de acesso a domínios de apostas, contribuindo para um uso mais seguro e responsável da internet.
+API desenvolvida em **Spring Boot** como parte da **pós-graduação em Arquitetura de Software do Instituto Infnet**.  
+O sistema tem como objetivo fornecer uma base para o **gerenciamento e bloqueio de sites de apostas**, permitindo registrar usuários, monitorar tentativas de acesso e administrar domínios suspeitos.
 
 ---
 
