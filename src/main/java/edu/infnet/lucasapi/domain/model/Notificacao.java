@@ -2,21 +2,22 @@ package edu.infnet.lucasapi.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "notificacoes",
+        indexes = {
+                @Index(name = "ix_notificacoes_usuario", columnList = "usuario_destinatario_id"),
+                @Index(name = "ix_notificacoes_avistamento", columnList = "avistamento_id")
+        })
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "notificacoes",
-        indexes = {
-                @Index(name = "ix_notificacoes_usuario", columnList = "usuario_id")
-        })
 public class Notificacao {
 
     @Id
@@ -24,19 +25,22 @@ public class Notificacao {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false, length = 256)
+    @Column(nullable = false, length = 255)
     private String mensagem;
-
-    @Column(nullable = false, name = "data_envio")
-    private LocalDateTime dataEnvio;
 
     @Column(nullable = false)
     private Boolean lida;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_notificacao_usuario"))
+    @Column(name = "data_envio", nullable = false)
+    private LocalDateTime dataEnvio;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_destinatario_id", nullable = false)
     @JsonBackReference("usuario-notificacoes")
-    private Usuario usuario;
+    private Usuario usuarioDestinatario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "avistamento_id", nullable = false)
+    @JsonBackReference("avistamento-notificacoes")
+    private Avistamento avistamento;
 }
