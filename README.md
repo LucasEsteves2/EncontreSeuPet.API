@@ -1,7 +1,9 @@
-# 🧱 API Bloqueio de Apostas
+# 🐾 EncontreSeuPet API
 
 API desenvolvida em **Spring Boot** como parte da **pós-graduação em Arquitetura de Software do Instituto Infnet**.  
-O sistema tem como objetivo fornecer uma base para o **gerenciamento e bloqueio de sites de apostas**, permitindo registrar usuários, monitorar tentativas de acesso e administrar domínios suspeitos.
+O sistema tem como objetivo auxiliar na **busca, registro e acompanhamento de pets desaparecidos**, conectando pessoas que perderam seus animais com quem os encontrou.
+
+> 💚 Em memória de **Fernandes**, o gato que inspirou este projeto.
 
 ---
 
@@ -12,9 +14,7 @@ O sistema tem como objetivo fornecer uma base para o **gerenciamento e bloqueio 
 - **Spring Data JPA / Hibernate**
 - **Jakarta Validation**
 - **Lombok**
-- **Banco de dados H2 (ambiente de desenvolvimento)**
+- **Banco de dados H2 (para ambiente de desenvolvimento)**
+- **Maven** como gerenciador de dependências
 
 ---
-
-## 🧩 Estrutura do Projeto
-
