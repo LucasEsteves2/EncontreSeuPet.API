@@ -46,6 +46,40 @@ O sistema tem como objetivo auxiliar na **busca, registro e acompanhamento de pe
 
 ---
 
+Para **facilitar a integração** e garantir **consistência entre todos os endpoints**, a arquitetura de resposta da API foi **padronizada**.  
+Todas as respostas seguem um modelo unificado, simplificando o consumo e o tratamento de erros por aplicações externas.
+
+## 🧱 Retorno Base
+
+```json
+{
+  "success": true,
+  "count": 1,
+  "data": {},
+  "message": null
+}
+```
+
+| Campo | Tipo | Descrição |
+|-------|------|------------|
+| `success` | boolean | Indica se a operação foi bem-sucedida |
+| `count` | number | Quantidade de itens retornados (0 para listas vazias ou operações sem retorno) |
+| `data` | object / array | Corpo da resposta com os dados solicitados |
+| `message` | string | Mensagem adicional (erro, validação ou informação de status) |
+
+---
+
+## ⚠️ Tratamento Padronizado de Erros
+
+Todas as exceções são tratadas globalmente via `GlobalExceptionHandler`, garantindo respostas uniformes e status HTTP coerentes com o padrão REST.
+
+| Código | Tipo de Erro | Exemplo de Resposta |
+|---------|---------------|--------------------|
+| **400** | Erro de validação (Bean Validation) | `{ "success": false, "message": "nome: O nome do pet é obrigatório." }` |
+| **404** | Entidade não encontrada | `{ "success": false, "message": "Pet não encontrado com ID: 99" }` |
+| **409** | Violação de integridade | `{ "success": false, "message": "Violação de integridade no banco de dados." }` |
+| **500** | Erro inesperado | `{ "success": false, "message": "Erro inesperado: NullPointerException" }` |
+
 ## 🚀 Tecnologias Utilizadas
 
 - **Java 17**
