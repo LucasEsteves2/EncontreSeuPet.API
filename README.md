@@ -4,6 +4,13 @@ API desenvolvida em **Spring Boot** como parte da **pós-graduação em Arquitet
 O sistema tem como objetivo auxiliar na **busca, registro e acompanhamento de pets desaparecidos**, conectando pessoas que perderam seus animais com quem os encontrou.
 
 > 💚 Em memória de **Fernandes**, o gato que inspirou este projeto.
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/b35b30de-6283-4aad-9357-3870372a3ed4" 
+       alt="Fernandes - O gato que inspirou o projeto" 
+       width="220" 
+       height="180" 
+       style="border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
+</p>
 
 ---
 
