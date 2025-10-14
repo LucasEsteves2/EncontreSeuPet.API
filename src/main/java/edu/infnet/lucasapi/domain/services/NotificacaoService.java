@@ -19,8 +19,4 @@ public class NotificacaoService extends BaseCrudService<Notificacao, Long> {
     public List<Notificacao> buscarPorUsuario(Long usuarioId) {
         return notificacaoRepository.findByUsuarioDestinatario_Id(usuarioId);
     }
-
-    public List<Notificacao> buscarNaoLidasPorUsuario(Long usuarioId) {
-        return notificacaoRepository.findByUsuarioDestinatario_IdAndLidaFalse(usuarioId);
-    }
 }

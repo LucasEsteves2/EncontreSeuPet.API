@@ -1,4 +1,4 @@
-package edu.infnet.lucasapi.controller.exception;
+package edu.infnet.lucasapi.exception;
 
 import edu.infnet.lucasapi.dto.ApiResponse;
 import jakarta.persistence.EntityNotFoundException;

@@ -2,28 +2,30 @@ package edu.infnet.lucasapi.dto;
 
 import edu.infnet.lucasapi.domain.enums.StatusPet;
 import edu.infnet.lucasapi.domain.model.Pet;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class PetRequestDto {
+
+    @NotBlank(message = "O nome do pet é obrigatório.")
     private String nome;
+
+    @NotBlank(message = "A espécie é obrigatória.")
     private String especie;
+
     private String raca;
-    private String cor;
-    private String descricao;
-    private String fotoUrl;
+
+    @NotNull(message = "O status do pet é obrigatório.")
     private StatusPet status;
-    private Long usuarioId;
 
     public Pet toEntity() {
-        Pet pet = new Pet();
-        pet.setNome(this.nome);
-        pet.setEspecie(this.especie);
-        pet.setRaca(this.raca);
-        pet.setCor(this.cor);
-        pet.setDescricao(this.descricao);
-        pet.setFotoUrl(this.fotoUrl);
-        pet.setStatus(this.status);
-        return pet;
+        return Pet.builder()
+                .nome(nome)
+                .especie(especie)
+                .raca(raca)
+                .status(status)
+                .build();
     }
 }

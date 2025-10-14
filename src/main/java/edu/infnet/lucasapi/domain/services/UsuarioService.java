@@ -4,8 +4,6 @@ import edu.infnet.lucasapi.domain.model.Usuario;
 import edu.infnet.lucasapi.infrastructure.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UsuarioService extends BaseCrudService<Usuario, Long> {
 
@@ -23,8 +21,5 @@ public class UsuarioService extends BaseCrudService<Usuario, Long> {
     public boolean existePorEmail(String email) {
         return usuarioRepository.existsByEmail(email);
     }
-
-    public List<Usuario> buscarPorNome(String nome) {
-        return usuarioRepository.findByNomeContainingIgnoreCase(nome);
-    }
 }
+

@@ -13,8 +13,4 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
     List<Pet> findByStatus(StatusPet status);
 
     List<Pet> findByUsuarioId(Long usuarioId);
-
-    List<Pet> findByNomeContainingIgnoreCase(String nome);
-
-    boolean existsByIdAndUsuarioId(Long petId, Long usuarioId);
 }

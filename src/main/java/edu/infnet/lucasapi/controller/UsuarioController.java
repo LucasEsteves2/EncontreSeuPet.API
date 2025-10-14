@@ -40,11 +40,6 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Usuario>> buscarPorNome(@RequestParam String nome) {
-        return ResponseEntity.ok(usuarioService.buscarPorNome(nome));
-    }
-
     @GetMapping("/email")
     public ResponseEntity<Usuario> buscarPorEmail(@RequestParam String email) {
         return ResponseEntity.ok(usuarioService.buscarPorEmail(email));

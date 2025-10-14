@@ -31,15 +31,4 @@ public class NotificacaoController {
     public ResponseEntity<List<Notificacao>> buscarPorUsuario(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(notificacaoService.buscarPorUsuario(usuarioId));
     }
-
-    @GetMapping("/usuario/{usuarioId}/nao-lidas")
-    public ResponseEntity<List<Notificacao>> buscarNaoLidasPorUsuario(@PathVariable Long usuarioId) {
-        return ResponseEntity.ok(notificacaoService.buscarNaoLidasPorUsuario(usuarioId));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        notificacaoService.excluir(id);
-        return ResponseEntity.noContent().build();
-    }
 }
