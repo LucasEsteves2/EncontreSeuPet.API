@@ -25,12 +25,4 @@ public class PetService extends BaseCrudService<Pet, Long> {
     public List<Pet> buscarPorUsuario(Long usuarioId) {
         return petRepository.findByUsuarioId(usuarioId);
     }
-
-    public List<Pet> buscarPorNome(String nome) {
-        return petRepository.findByNomeContainingIgnoreCase(nome);
-    }
-
-    public long contarTodos() {
-        return petRepository.count();
-    }
 }

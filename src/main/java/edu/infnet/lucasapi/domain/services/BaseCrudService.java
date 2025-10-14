@@ -14,14 +14,13 @@ public abstract class BaseCrudService<T, ID> implements CrudService<T, ID> {
     }
 
     @Override
-    public void criar(T entidade) {
-        repository.save(entidade);
+    public T criar(T entidade) {
+        return repository.save(entidade);
     }
 
     @Override
     public T buscarPorId(ID id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Entidade não encontrada com ID: " + id));
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -31,9 +30,6 @@ public abstract class BaseCrudService<T, ID> implements CrudService<T, ID> {
 
     @Override
     public void excluir(ID id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Não foi possível excluir: ID não encontrado.");
-        }
         repository.deleteById(id);
     }
 }

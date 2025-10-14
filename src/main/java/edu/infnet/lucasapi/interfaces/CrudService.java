@@ -3,7 +3,7 @@ package edu.infnet.lucasapi.interfaces;
 import java.util.List;
 
 public interface CrudService<T, ID> {
-    void criar(T entidade);
+    T criar(T entidade);
 
     T buscarPorId(ID id);
 
