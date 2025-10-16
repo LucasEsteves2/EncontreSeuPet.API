@@ -1,4 +1,4 @@
-package edu.infnet.lucasapi.infrastructure.repository;
+package edu.infnet.lucasapi.repository;
 
 import edu.infnet.lucasapi.domain.model.Localizacao;
 import org.springframework.data.jpa.repository.JpaRepository;

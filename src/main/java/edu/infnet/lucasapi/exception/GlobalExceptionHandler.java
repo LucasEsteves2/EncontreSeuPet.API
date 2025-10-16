@@ -1,6 +1,6 @@
 package edu.infnet.lucasapi.exception;
 
-import edu.infnet.lucasapi.dto.ApiResponse;
+import edu.infnet.lucasapi.controller.dto.ApiResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleEntityNotFound(EntityNotFoundException ex) {
+    public ResponseEntity<ApiResponseDto<Void>> handleEntityNotFound(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ApiResponse.fail(ex.getMessage()));
+                .body(ApiResponseDto.fail(ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleValidationErrors(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponseDto<Void>> handleValidationErrors(MethodArgumentNotValidException ex) {
         String mensagem = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -27,18 +27,18 @@ public class GlobalExceptionHandler {
                 .findFirst()
                 .orElse("Erro de validação nos campos da requisição.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.fail(mensagem));
+                .body(ApiResponseDto.fail(mensagem));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleConstraintErrors(DataIntegrityViolationException ex) {
+    public ResponseEntity<ApiResponseDto<Void>> handleConstraintErrors(DataIntegrityViolationException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ApiResponse.fail("Violação de integridade no banco de dados."));
+                .body(ApiResponseDto.fail("Violação de integridade no banco de dados."));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleGeneric(Exception ex) {
+    public ResponseEntity<ApiResponseDto<Void>> handleGeneric(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.fail("Erro inesperado: " + ex.getMessage()));
+                .body(ApiResponseDto.fail("Erro inesperado: " + ex.getMessage()));
     }
 }

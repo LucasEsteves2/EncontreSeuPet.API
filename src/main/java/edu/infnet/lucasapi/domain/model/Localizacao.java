@@ -29,9 +29,21 @@ public class Localizacao {
     private Endereco endereco;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = true, length = 30)
     private TipoLocalizacao tipo;
 
     @OneToOne(mappedBy = "localizacao", cascade = CascadeType.ALL)
     private Avistamento avistamento;
+
+    @Override
+    public String toString() {
+        return "Localizacao {" +
+                "id=" + id +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", tipo=" + tipo +
+                ", endereco=" + (endereco != null ? endereco.toString() : "null") +
+                '}';
+    }
+
 }

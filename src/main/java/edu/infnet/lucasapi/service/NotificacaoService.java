@@ -1,7 +1,7 @@
-package edu.infnet.lucasapi.domain.services;
+package edu.infnet.lucasapi.service;
 
 import edu.infnet.lucasapi.domain.model.Notificacao;
-import edu.infnet.lucasapi.infrastructure.repository.NotificacaoRepository;
+import edu.infnet.lucasapi.repository.NotificacaoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

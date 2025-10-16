@@ -1,7 +1,7 @@
 package edu.infnet.lucasapi.controller;
 
 import edu.infnet.lucasapi.domain.model.Usuario;
-import edu.infnet.lucasapi.domain.services.UsuarioService;
+import edu.infnet.lucasapi.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +24,10 @@ public class UsuarioController {
         return ResponseEntity.created(URI.create("/usuarios/" + usuario.getId())).body(usuario);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Usuario>> listarTodos() {
-        return ResponseEntity.ok(usuarioService.listarTodos());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Usuario>> listarTodos() {
+//        return ResponseEntity.ok(usuarioService.listarTodos());
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {

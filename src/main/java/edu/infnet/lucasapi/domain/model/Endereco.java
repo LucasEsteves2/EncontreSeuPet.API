@@ -17,4 +17,17 @@ public class Endereco {
     private String cidade;
     private String estado;
     private String cep;
+
+    @Override
+    public String toString() {
+        return "Endereco {" +
+                "rua='" + rua + '\'' +
+                ", numero='" + numero + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", estado='" + estado + '\'' +
+                ", cep='" + cep + '\'' +
+                '}';
+    }
+
 }

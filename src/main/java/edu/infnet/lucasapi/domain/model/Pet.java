@@ -57,4 +57,18 @@ public class Pet {
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("pet-avistamentos")
     private List<Avistamento> avistamentos;
+
+    @Override
+    public String toString() {
+        return "Pet {" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", especie='" + especie + '\'' +
+                ", cor='" + cor + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", status=" + status +
+                ", usuario=" + (usuario != null ? usuario.getNome() : "null") +
+                '}';
+    }
+
 }

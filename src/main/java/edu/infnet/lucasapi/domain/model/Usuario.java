@@ -3,6 +3,7 @@ package edu.infnet.lucasapi.domain.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -12,26 +13,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Usuario {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
-
-    @Column(nullable = false, unique = true, length = 100)
-    private String email;
-
-    @Column(nullable = false, length = 100)
-    private String nome;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true)
+public class Usuario extends Pessoa {
 
     @Column(nullable = false)
     private String senha;
-
-    @Column(length = 20)
-    private String telefone;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("usuario-pets")
@@ -44,4 +32,14 @@ public class Usuario {
     @OneToMany(mappedBy = "usuarioDestinatario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("usuario-notificacoes")
     private List<Notificacao> notificacoes;
+
+    @Override
+    public String toString() {
+        return "Usuario {" +
+                "id=" + getId() +
+                ", nome='" + getNome() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", telefone='" + getTelefone() + '\'' +
+                '}';
+    }
 }

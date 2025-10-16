@@ -1,7 +1,7 @@
-package edu.infnet.lucasapi.domain.services;
+package edu.infnet.lucasapi.service;
 
 import edu.infnet.lucasapi.domain.model.Usuario;
-import edu.infnet.lucasapi.infrastructure.repository.UsuarioRepository;
+import edu.infnet.lucasapi.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 @Service

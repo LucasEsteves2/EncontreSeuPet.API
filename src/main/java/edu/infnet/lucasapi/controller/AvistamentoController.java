@@ -1,7 +1,7 @@
 package edu.infnet.lucasapi.controller;
 
 import edu.infnet.lucasapi.domain.model.Avistamento;
-import edu.infnet.lucasapi.domain.services.AvistamentoService;
+import edu.infnet.lucasapi.service.AvistamentoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +24,10 @@ public class AvistamentoController {
         return ResponseEntity.created(URI.create("/avistamentos/" + avistamento.getId())).body(avistamento);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Avistamento>> listarTodos() {
-        return ResponseEntity.ok(avistamentoService.listarTodos());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Avistamento>> listarTodos() {
+//        return ResponseEntity.ok(avistamentoService.listarTodos());
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Avistamento> buscarPorId(@PathVariable Long id) {

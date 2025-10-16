@@ -53,4 +53,17 @@ public class Avistamento {
     @OneToMany(mappedBy = "avistamento", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("avistamento-notificacoes")
     private List<Notificacao> notificacoes;
+
+    @Override
+    public String toString() {
+        return "Avistamento {" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                ", dataAvistamento=" + dataAvistamento +
+                ", usuario=" + (usuario != null ? usuario.getNome() : "null") +
+                ", pet=" + (pet != null ? pet.getNome() : "null") +
+                ", localizacao=" + (localizacao != null ? localizacao.toString() : "null") +
+                '}';
+    }
+
 }

@@ -1,7 +1,7 @@
-package edu.infnet.lucasapi.domain.services;
+package edu.infnet.lucasapi.service;
 
 import edu.infnet.lucasapi.domain.model.Avistamento;
-import edu.infnet.lucasapi.infrastructure.repository.AvistamentoRepository;
+import edu.infnet.lucasapi.repository.AvistamentoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
