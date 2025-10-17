@@ -1,8 +1,9 @@
 package edu.infnet.lucasapi.controller;
 
-import edu.infnet.lucasapi.controller.dto.ApiResponseDto;
-import edu.infnet.lucasapi.controller.dto.PetRequestDto;
-import edu.infnet.lucasapi.controller.dto.PetResponseDto;
+import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
+import edu.infnet.lucasapi.controller.dto.request.PetRequestDto;
+import edu.infnet.lucasapi.controller.dto.response.PetDetailResponseDto;
+import edu.infnet.lucasapi.controller.dto.response.PetResponseDto;
 import edu.infnet.lucasapi.domain.enums.StatusPet;
 import edu.infnet.lucasapi.service.PetService;
 import jakarta.validation.Valid;
@@ -35,10 +36,11 @@ public class PetController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<PetResponseDto>> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<PetDetailResponseDto>> buscarPorId(@PathVariable Long id) {
         var pet = petService.buscarPorId(id);
-        return ok(PetResponseDto.fromEntity(pet));
+        return ok(PetDetailResponseDto.fromEntity(pet));
     }
+
 
     @GetMapping
     public ResponseEntity<ApiResponseDto<List<PetResponseDto>>> listar(

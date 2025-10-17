@@ -1,4 +1,4 @@
-package edu.infnet.lucasapi.controller.dto;
+package edu.infnet.lucasapi.controller.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -38,14 +38,20 @@ public class ApiResponseDto<T> {
     }
 
     public static <T> ApiResponseDto<List<T>> success(Page<T> page) {
-        return ApiResponseDto.<List<T>>builder()
+        long count = page.getNumberOfElements();
+
+        ApiResponseDto.ApiResponseDtoBuilder<List<T>> builder = ApiResponseDto.<List<T>>builder()
                 .success(true)
-                .page(page.getNumber())
-                .totalPages(page.getTotalPages())
-                .size(page.getSize())
-                .count((long) page.getNumberOfElements())
-                .data(page.getContent())
-                .build();
+                .count(count)
+                .data(page.getContent());
+
+        if (count > 0) {
+            builder.page(page.getNumber())
+                    .totalPages(page.getTotalPages())
+                    .size(page.getSize());
+        }
+
+        return builder.build();
     }
 
     public static <T> ApiResponseDto<T> fail(String message) {

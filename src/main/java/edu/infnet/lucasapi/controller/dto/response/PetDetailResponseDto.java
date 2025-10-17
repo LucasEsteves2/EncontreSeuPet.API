@@ -1,4 +1,4 @@
-package edu.infnet.lucasapi.controller.dto;
+package edu.infnet.lucasapi.controller.dto.response;
 
 import edu.infnet.lucasapi.domain.enums.StatusPet;
 import edu.infnet.lucasapi.domain.model.Pet;
@@ -6,36 +6,37 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
-public class PetResponseDto {
+public class PetDetailResponseDto {
     private Long id;
     private String nome;
     private String especie;
     private String raca;
     private String cor;
+    private String descricao;
     private StatusPet status;
     private String fotoUrl;
+    private Long usuarioId;
     private String usuarioNome;
+    private List<AvistamentoResponseDto> avistamentos;
 
-    public static PetResponseDto fromEntity(Pet pet) {
-        return PetResponseDto.builder()
+    public static PetDetailResponseDto fromEntity(Pet pet) {
+        return PetDetailResponseDto.builder()
                 .id(pet.getId())
                 .nome(pet.getNome())
                 .especie(pet.getEspecie())
                 .raca(pet.getRaca())
                 .cor(pet.getCor())
+                .descricao(pet.getDescricao())
                 .status(pet.getStatus())
                 .fotoUrl(pet.getFotoUrl())
+                .usuarioId(pet.getUsuario() != null ? pet.getUsuario().getId() : null)
                 .usuarioNome(pet.getUsuario() != null ? pet.getUsuario().getNome() : null)
+                .avistamentos(pet.getAvistamentos() != null
+                        ? AvistamentoResponseDto.fromEntities(pet.getAvistamentos())
+                        : null)
                 .build();
-    }
-
-    public static List<PetResponseDto> fromEntities(List<Pet> pets) {
-        return pets.stream()
-                .map(PetResponseDto::fromEntity)
-                .collect(Collectors.toList());
     }
 }

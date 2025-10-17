@@ -1,6 +1,6 @@
 package edu.infnet.lucasapi.exception;
 
-import edu.infnet.lucasapi.controller.dto.ApiResponseDto;
+import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

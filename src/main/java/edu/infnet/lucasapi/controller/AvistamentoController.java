@@ -1,16 +1,19 @@
 package edu.infnet.lucasapi.controller;
 
-import edu.infnet.lucasapi.domain.model.Avistamento;
+import edu.infnet.lucasapi.controller.dto.request.AvistamentoRequestDto;
+import edu.infnet.lucasapi.controller.dto.response.AvistamentoResponseDto;
+import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
 import edu.infnet.lucasapi.service.AvistamentoService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/avistamentos")
-public class AvistamentoController {
+public class AvistamentoController extends BaseController {
 
     private final AvistamentoService avistamentoService;
 
@@ -19,34 +22,35 @@ public class AvistamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<Avistamento> criar(@RequestBody Avistamento avistamento) {
-        avistamentoService.criar(avistamento);
-        return ResponseEntity.created(URI.create("/avistamentos/" + avistamento.getId())).body(avistamento);
-    }
-
-//    @GetMapping
-//    public ResponseEntity<List<Avistamento>> listarTodos() {
-//        return ResponseEntity.ok(avistamentoService.listarTodos());
-//    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Avistamento> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(avistamentoService.buscarPorId(id));
+    public ResponseEntity<ApiResponseDto<AvistamentoResponseDto>> criar(@RequestBody @Valid AvistamentoRequestDto request) {
+        var avistamento = avistamentoService.criar(request.toEntity());
+        return created("/avistamentos", avistamento.getId(), AvistamentoResponseDto.fromEntity(avistamento));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         avistamentoService.excluir(id);
-        return ResponseEntity.noContent().build();
+        return noContent();
     }
 
-    @GetMapping("/pet/{petId}")
-    public ResponseEntity<List<Avistamento>> listarPorPet(@PathVariable Long petId) {
-        return ResponseEntity.ok(avistamentoService.buscarPorPet(petId));
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponseDto<AvistamentoResponseDto>> buscarPorId(@PathVariable Long id)
+    {
+        var avistamento = avistamentoService.buscarPorId(id);
+        return ok(AvistamentoResponseDto.fromEntity(avistamento));
     }
 
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<Avistamento>> listarPorUsuario(@PathVariable Long usuarioId) {
-        return ResponseEntity.ok(avistamentoService.buscarPorUsuario(usuarioId));
+    @GetMapping
+    public ResponseEntity<ApiResponseDto<List<AvistamentoResponseDto>>> listar(
+            @RequestParam(required = false) Long petId,
+            @RequestParam(required = false) Long usuarioId,
+            @RequestParam(required = false) String descricao,
+            Pageable pageable
+    )
+    {
+        var page = avistamentoService.buscarComFiltros(pageable, petId, usuarioId, descricao)
+                .map(AvistamentoResponseDto::fromEntity);
+
+        return ok(page);
     }
 }

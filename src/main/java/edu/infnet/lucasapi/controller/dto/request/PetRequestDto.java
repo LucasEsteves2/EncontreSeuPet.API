@@ -1,4 +1,4 @@
-package edu.infnet.lucasapi.controller.dto;
+package edu.infnet.lucasapi.controller.dto.request;
 
 import edu.infnet.lucasapi.domain.enums.StatusPet;
 import edu.infnet.lucasapi.domain.model.Pet;

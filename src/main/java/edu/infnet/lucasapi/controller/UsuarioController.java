@@ -1,16 +1,19 @@
 package edu.infnet.lucasapi.controller;
 
-import edu.infnet.lucasapi.domain.model.Usuario;
+import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
+import edu.infnet.lucasapi.controller.dto.request.UsuarioRequestDto;
+import edu.infnet.lucasapi.controller.dto.response.UsuarioResponseDto;
 import edu.infnet.lucasapi.service.UsuarioService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioController {
+public class UsuarioController extends BaseController {
 
     private final UsuarioService usuarioService;
 
@@ -19,29 +22,34 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario) {
-        usuarioService.criar(usuario);
-        return ResponseEntity.created(URI.create("/usuarios/" + usuario.getId())).body(usuario);
-    }
-
-//    @GetMapping
-//    public ResponseEntity<List<Usuario>> listarTodos() {
-//        return ResponseEntity.ok(usuarioService.listarTodos());
-//    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(usuarioService.buscarPorId(id));
+    public ResponseEntity<ApiResponseDto<UsuarioResponseDto>> criar(@RequestBody @Valid UsuarioRequestDto request) {
+        var usuario = usuarioService.criar(request.toEntity());
+        return created("/usuarios", usuario.getId(), UsuarioResponseDto.fromEntity(usuario));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         usuarioService.excluir(id);
-        return ResponseEntity.noContent().build();
+        return noContent();
     }
 
-    @GetMapping("/email")
-    public ResponseEntity<Usuario> buscarPorEmail(@RequestParam String email) {
-        return ResponseEntity.ok(usuarioService.buscarPorEmail(email));
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponseDto<UsuarioResponseDto>> buscarPorId(@PathVariable Long id) {
+        var usuario = usuarioService.buscarPorId(id);
+        return ok(UsuarioResponseDto.fromEntity(usuario));
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponseDto<List<UsuarioResponseDto>>> listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String telefone,
+            Pageable pageable
+    ) {
+        var page = usuarioService.buscarComFiltros(pageable, nome, email, telefone)
+                .map(UsuarioResponseDto::fromEntity);
+        return ok(page);
+    }
+
+
 }

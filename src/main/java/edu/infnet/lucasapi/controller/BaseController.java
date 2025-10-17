@@ -1,6 +1,6 @@
 package edu.infnet.lucasapi.controller;
 
-import edu.infnet.lucasapi.controller.dto.ApiResponseDto;
+import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
