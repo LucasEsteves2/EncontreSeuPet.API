@@ -1,7 +1,7 @@
 package edu.infnet.lucasapi.controller;
 
-import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
 import edu.infnet.lucasapi.controller.dto.request.UsuarioRequestDto;
+import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
 import edu.infnet.lucasapi.controller.dto.response.UsuarioResponseDto;
 import edu.infnet.lucasapi.service.UsuarioService;
 import jakarta.validation.Valid;

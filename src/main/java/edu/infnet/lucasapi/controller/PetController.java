@@ -1,11 +1,14 @@
 package edu.infnet.lucasapi.controller;
 
-import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
+import edu.infnet.lucasapi.controller.dto.request.AtualizarStatusPetRequest;
 import edu.infnet.lucasapi.controller.dto.request.PetRequestDto;
+import edu.infnet.lucasapi.controller.dto.response.ApiResponseDto;
 import edu.infnet.lucasapi.controller.dto.response.PetDetailResponseDto;
 import edu.infnet.lucasapi.controller.dto.response.PetResponseDto;
 import edu.infnet.lucasapi.domain.enums.StatusPet;
+import edu.infnet.lucasapi.domain.model.Pet;
 import edu.infnet.lucasapi.service.PetService;
+import edu.infnet.lucasapi.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +27,18 @@ public class PetController extends BaseController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponseDto<PetResponseDto>> criar(@RequestBody @Valid PetRequestDto request) {
-        var pet = petService.criar(request.toEntity());
-        return created("/pets", pet.getId(), PetResponseDto.fromEntity(pet));
+    public ResponseEntity<ApiResponseDto<PetResponseDto>> criar(@RequestBody @Valid PetRequestDto dto) {
+        var salvo = petService.criar(dto.toEntity(), dto.getUsuarioId());
+        return created("/pets", salvo.getId(), PetResponseDto.fromEntity(salvo));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        petService.excluir(id);
-        return noContent();
-    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<PetDetailResponseDto>> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<PetDetailResponseDto>> buscarPorId(@PathVariable Long id)
+    {
         var pet = petService.buscarPorId(id);
         return ok(PetDetailResponseDto.fromEntity(pet));
     }
-
 
     @GetMapping
     public ResponseEntity<ApiResponseDto<List<PetResponseDto>>> listar(
@@ -48,8 +46,36 @@ public class PetController extends BaseController {
             @RequestParam(required = false) Long usuarioId,
             @RequestParam(required = false) String raca,
             Pageable pageable
-    ) {
+    )
+    {
         var page = petService.buscarComFiltros(pageable, status, usuarioId, raca).map(PetResponseDto::fromEntity);
         return ok(page);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponseDto<PetResponseDto>> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid PetRequestDto request)
+    {
+
+        var atualizado = petService.atualizar(id, request.toEntity());
+        return ok(PetResponseDto.fromEntity(atualizado));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponseDto<PetResponseDto>> atualizarStatus(
+            @PathVariable Long id,
+            @RequestBody @Valid AtualizarStatusPetRequest request)
+    {
+
+        Pet atualizado = petService.atualizarStatus(id, request.getStatus());
+        return ok(PetResponseDto.fromEntity(atualizado));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id)
+    {
+        petService.excluir(id);
+        return noContent();
     }
 }

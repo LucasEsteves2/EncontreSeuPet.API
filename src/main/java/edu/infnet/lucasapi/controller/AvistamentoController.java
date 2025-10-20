@@ -22,15 +22,10 @@ public class AvistamentoController extends BaseController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponseDto<AvistamentoResponseDto>> criar(@RequestBody @Valid AvistamentoRequestDto request) {
-        var avistamento = avistamentoService.criar(request.toEntity());
+    public ResponseEntity<ApiResponseDto<AvistamentoResponseDto>> criar(@RequestBody @Valid AvistamentoRequestDto request)
+    {
+        var avistamento = avistamentoService.criarAvistamento(request.toEntity(), request.getUsuarioId(), request.getPetId());
         return created("/avistamentos", avistamento.getId(), AvistamentoResponseDto.fromEntity(avistamento));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        avistamentoService.excluir(id);
-        return noContent();
     }
 
     @GetMapping("/{id}")
@@ -53,4 +48,11 @@ public class AvistamentoController extends BaseController {
 
         return ok(page);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        avistamentoService.excluir(id);
+        return noContent();
+    }
+
 }

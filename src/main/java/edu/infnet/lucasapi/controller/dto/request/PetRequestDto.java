@@ -15,6 +15,9 @@ public class PetRequestDto {
     @NotBlank(message = "A espécie é obrigatória.")
     private String especie;
 
+    @NotNull(message = "O ID do usuário é obrigatório.")
+    private Long usuarioId;
+
     private String raca;
 
     @NotNull(message = "O status do pet é obrigatório.")

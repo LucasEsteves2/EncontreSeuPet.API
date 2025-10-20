@@ -1,6 +1,9 @@
 package edu.infnet.lucasapi.service;
 
+import edu.infnet.lucasapi.domain.exception.AvistamentoException;
 import edu.infnet.lucasapi.domain.model.Avistamento;
+import edu.infnet.lucasapi.domain.model.Pet;
+import edu.infnet.lucasapi.domain.validator.AvistamentoValidator;
 import edu.infnet.lucasapi.repository.AvistamentoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,29 +14,34 @@ import org.springframework.stereotype.Service;
 public class AvistamentoService extends BaseCrudService<Avistamento, Long> {
 
     private final AvistamentoRepository avistamentoRepository;
+    private final AvistamentoValidator avistamentoValidator;
     private final NotificacaoService notificacaoService;
+    private final UsuarioService usuarioService;
+    private final PetService petService;
 
-    public AvistamentoService(AvistamentoRepository avistamentoRepository, NotificacaoService notificacaoService) {
+    public AvistamentoService(AvistamentoRepository avistamentoRepository, AvistamentoValidator avistamentoValidator, NotificacaoService notificacaoService, UsuarioService usuarioService, PetService petService) {
         super(avistamentoRepository);
         this.avistamentoRepository = avistamentoRepository;
+        this.avistamentoValidator = avistamentoValidator;
         this.notificacaoService = notificacaoService;
+        this.usuarioService = usuarioService;
+        this.petService = petService;
     }
 
-    public Avistamento criar(Avistamento avistamento) {
+    public Avistamento criarAvistamento(Avistamento avistamento, Long usuarioId, Long petId)
+    {
+        var usuario = usuarioService.buscarPorId(usuarioId);
+        var pet = petService.buscarPorId(petId);
 
-        if (avistamento.getLocalizacao() != null) {
-            avistamento.getLocalizacao().setAvistamento(avistamento);
-        }
+        avistamento.setUsuario(usuario);
+        avistamento.setPet(pet);
 
+        avistamentoValidator.validarCriacao(avistamento);
+
+        avistamento.getLocalizacao().setAvistamento(avistamento);
         var salvo = super.criar(avistamento);
 
-        var usuario = salvo.getPet().getUsuario();
-        var pet = salvo.getPet();
-
-        var mensagem = "Seu pet " + pet.getNome() + " foi avistado em " + formatarLocalizacao(salvo);
-
-        notificacaoService.criarNotificacao(usuario, mensagem, salvo);
-
+        notificarDonoDoPet(salvo);
         return salvo;
     }
 
@@ -59,15 +67,17 @@ public class AvistamentoService extends BaseCrudService<Avistamento, Long> {
         return filtros;
     }
 
+    private void notificarDonoDoPet(Avistamento avistamento) {
+        var pet = avistamento.getPet();
+        var usuario = pet.getUsuario();
+        var mensagem = montarMensagemDeAvistamento(pet, avistamento);
 
-    private String formatarLocalizacao(Avistamento a) {
-        if (a.getLocalizacao() == null || a.getLocalizacao().getEndereco() == null)
-            return "localização não especificada";
+        notificacaoService.criarNotificacao(usuario, mensagem, avistamento);
+    }
 
-        var end = a.getLocalizacao().getEndereco();
-        return String.format("%s, %s - %s",
-                end.getRua(),
-                end.getBairro(),
-                end.getCidade());
+    private String montarMensagemDeAvistamento(Pet pet, Avistamento avistamento) {
+        var nomePet = pet.getNome() != null ? pet.getNome() : "seu pet";
+        var local = "no bairro " + avistamento.getLocalizacao().getEndereco().getBairro();
+        return String.format("%s foi avistado recentemente %s.", nomePet, local);
     }
 }

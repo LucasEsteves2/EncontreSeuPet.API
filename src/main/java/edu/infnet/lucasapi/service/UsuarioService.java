@@ -1,5 +1,6 @@
 package edu.infnet.lucasapi.service;
 
+import edu.infnet.lucasapi.domain.exception.UsuarioException;
 import edu.infnet.lucasapi.domain.model.Usuario;
 import edu.infnet.lucasapi.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,17 @@ public class UsuarioService extends BaseCrudService<Usuario, Long> {
         super(usuarioRepository);
         this.usuarioRepository = usuarioRepository;
     }
+
+    @Override
+    public Usuario buscarPorId(Long id) {
+        var usuario = super.buscarPorId(id);
+
+        if (usuario == null)
+            throw UsuarioException.naoEncontrado(id);
+
+        return usuario;
+    }
+
 
     public Page<Usuario> buscarComFiltros(Pageable pageable, String nome, String email, String telefone) {
         var filtros = criarFiltros(nome, email, telefone);

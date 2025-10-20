@@ -35,10 +35,21 @@ public abstract class BaseCrudService<T, ID> implements CrudService<T, ID> {
 
     @Override
     public T buscarPorId(ID id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        String.format("Registro não encontrado para o ID: %s", id)
-                ));
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public T atualizar(ID id, T entidadeAtualizada) {
+        T existente = buscarPorId(id);
+
+        try {
+            var idField = existente.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(entidadeAtualizada, id);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+        }
+
+        return repository.save(entidadeAtualizada);
     }
 
     @Override

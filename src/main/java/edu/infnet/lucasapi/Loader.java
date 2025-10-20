@@ -134,10 +134,10 @@ public class Loader implements ApplicationRunner {
                         .pet(pet)
                         .usuario(usuario)
                         .localizacao(localizacao)
-                        .dataAvistamento(LocalDateTime.now()) // data atual
+                        .dataAvistamento(LocalDateTime.now())
                         .build();
 
-                avistamentoService.criar(avistamento);
+                avistamentoService.criarAvistamento(avistamento, usuarioId, petId);
                 count++;
             }
         }

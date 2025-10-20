@@ -10,6 +10,8 @@ public interface CrudService<T, ID> {
 
     T buscarPorId(ID id);
 
+    T atualizar(ID id, T entidadeAtualizada);
+
     Page<T> listarTodos(Pageable pageable);
 
     void excluir(ID id);
