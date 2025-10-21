@@ -17,13 +17,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Notificacao {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Notificacao extends BaseEntity{
 
     @Column(nullable = false, length = 255)
     private String mensagem;

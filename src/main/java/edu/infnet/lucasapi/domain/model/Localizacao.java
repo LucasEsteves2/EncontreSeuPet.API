@@ -11,13 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Localizacao {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Localizacao extends BaseEntity {
 
     @Column(nullable = false)
     private Double latitude;
@@ -38,7 +33,7 @@ public class Localizacao {
     @Override
     public String toString() {
         return "Localizacao {" +
-                "id=" + id +
+                "id=" + getId() +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", tipo=" + tipo +

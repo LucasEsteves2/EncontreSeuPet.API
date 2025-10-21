@@ -4,27 +4,23 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @MappedSuperclass
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@SuperBuilder
-public abstract class Pessoa {
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String nome;
-
-    @Column(nullable = false, unique = true, length = 100)
-    private String email;
-
-    @Column(length = 20)
-    private String telefone;
+    @Builder.Default
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 }

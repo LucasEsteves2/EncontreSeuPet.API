@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Endereco {
-
     private String rua;
     private String numero;
     private String bairro;

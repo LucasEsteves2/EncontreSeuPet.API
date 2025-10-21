@@ -19,13 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Avistamento {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Avistamento extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String descricao;
@@ -57,7 +52,7 @@ public class Avistamento {
     @Override
     public String toString() {
         return "Avistamento {" +
-                "id=" + id +
+                "id=" + getId() +
                 ", descricao='" + descricao + '\'' +
                 ", dataAvistamento=" + dataAvistamento +
                 ", usuario=" + (usuario != null ? usuario.getNome() : "null") +

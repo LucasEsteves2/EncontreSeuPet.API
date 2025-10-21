@@ -14,9 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@ToString(callSuper = true)
-public class Usuario extends Pessoa {
+@EqualsAndHashCode(callSuper = true)
+public class Usuario extends BaseEntity {
+
+    @Column(nullable = false, length = 100)
+    private String nome;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(length = 20)
+    private String telefone;
 
     @Column(nullable = false)
     private String senha;

@@ -16,13 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Pet {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Pet extends BaseEntity {
 
     @Column(nullable = false, length = 80)
     private String nome;
@@ -61,7 +56,7 @@ public class Pet {
     @Override
     public String toString() {
         return "Pet {" +
-                "id=" + id +
+                "id=" + getId() +
                 ", nome='" + nome + '\'' +
                 ", especie='" + especie + '\'' +
                 ", cor='" + cor + '\'' +
