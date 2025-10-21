@@ -12,7 +12,7 @@ O sistema tem como objetivo auxiliar na **busca, registro e acompanhamento de pe
        style="border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" />
 </p>
 <p align="center">
-  💚 <strong>Em memória de <em>Fernandes</em>, o gato que inspirou este projeto.</strong>
+  💚 <strong>Dedicado a <em>Fernandes</em>, o gato que inspirou este projeto.</strong>
 </p>
 
 
