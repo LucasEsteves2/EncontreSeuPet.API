@@ -18,7 +18,7 @@ O sistema tem como objetivo auxiliar na **busca, registro e acompanhamento de pe
 
 ---
 
-## ⚙️ Funcionalidades Principais
+## ⚙️ Funcionalidades 
 
 - 🐕 **Cadastro de Pets:** registre informações detalhadas sobre o animal (nome, espécie, cor, descrição e status).  
 - 👤 **Gestão de Usuários:** cada usuário pode cadastrar e gerenciar seus próprios pets.  
@@ -33,50 +33,84 @@ O sistema tem como objetivo auxiliar na **busca, registro e acompanhamento de pe
 
 ---
 
-## 📍 Principais Endpoints
+## 🧱 Estrutura de Retorno Padrão
 
-| Controller | Método | Rota | Descrição |
-|-------------|:------:|------|------------|
-| **UsuárioController** | `POST` | `/usuarios` | Cadastra um novo usuário |
-|  | `GET` | `/usuarios/{id}` | Consulta um usuário específico |
-|  | `DELETE` | `/usuarios/{id}` | Remove um usuário do sistema |
-| **PetController** | `POST` | `/pets` | Cadastra um novo pet |
-|  | `GET` | `/pets` | Lista todos os pets |
-|  | `GET` | `/pets/{id}` | Busca um pet pelo ID |
-|  | `GET` | `/pets/status/{status}` | Lista pets por status (desaparecido, encontrado, etc.) |
-|  | `GET` | `/pets/usuario/{usuarioId}` | Lista pets cadastrados por um usuário |
-|  | `GET` | `/pets/search?nome=` | Busca pets por nome |
-|  | `DELETE` | `/pets/{id}` | Remove um pet do sistema |
-| **AvistamentoController** | `POST` | `/avistamentos` | Registra um novo avistamento de pet |
-|  | `GET` | `/avistamentos` | Lista todos os avistamentos |
-|  | `GET` | `/avistamentos/{id}` | Busca um avistamento específico |
-|  | `GET` | `/avistamentos/pet/{petId}` | Lista avistamentos de um pet |
-|  | `GET` | `/avistamentos/usuario/{usuarioId}` | Lista avistamentos feitos por um usuário |
-|  | `GET` | `/avistamentos/nao-verificados` | Lista avistamentos ainda não verificados |
-|  | `DELETE` | `/avistamentos/{id}` | Remove um avistamento |
-
----
-
-Para **facilitar a integração** e garantir **consistência entre todos os endpoints**, a arquitetura de resposta da API foi **padronizada**.  
-Todas as respostas seguem um modelo unificado, simplificando o consumo e o tratamento de erros por aplicações externas.
-
-## 🧱 Retorno Base
+### ✅ 200 - OK
 
 ```json
 {
   "success": true,
   "count": 1,
-  "data": {},
-  "message": null
+  "page": 0,
+  "totalPages": 1,
+  "size": 20,
+  "data": []
+}
+```
+| Campo | Tipo | Descrição |
+|--------|------|-----------|
+| `success` | boolean | Indica se a operação foi bem-sucedida |
+| `count` | number | Quantidade de itens retornados |
+| `page` | number | Página atual (0 = primeira) |
+| `totalPages` | number | Total de páginas disponíveis |
+| `size` | number | Tamanho da página (quantidade máxima de registros por página) |
+| `data` | array / object | Dados retornados (ex: lista de pets, avistamentos, usuários etc.) |
+
+### ❌ 400 - Bad Request
+
+```json
+{
+  "success": false,
+  "message": "Pet com ID 155 não foi encontrado."
 }
 ```
 
-| Campo | Tipo | Descrição |
-|-------|------|------------|
-| `success` | boolean | Indica se a operação foi bem-sucedida |
-| `count` | number | Quantidade de itens retornados (0 para listas vazias ou operações sem retorno) |
-| `data` | object / array | Corpo da resposta com os dados solicitados |
-| `message` | string | Mensagem adicional (erro, validação ou informação de status) |
+---
+
+## 📍 Endpoints Disponíveis
+
+### 🧍‍♂️ Usuários
+
+| Método | Rota | Descrição |
+|:------:|------|------------|
+| `POST` | `/usuarios` | Cria um novo usuário |
+| `GET` | `/usuarios` | Lista usuários com filtros (nome, email, telefone) |
+| `GET` | `/usuarios/{id}` | Busca usuário pelo ID |
+| `DELETE` | `/usuarios/{id}` | Remove um usuário |
+
+
+---
+
+### 🐕 Pets
+
+| Método | Rota | Descrição |
+|:------:|------|------------|
+| `POST` | `/pets` | Cadastra um novo pet vinculado a um usuário |
+| `GET` | `/pets` | Lista pets com filtros (`status`, `usuarioId`, `raca`) |
+| `GET` | `/pets/{id}` | Busca pet por ID |
+| `PUT` | `/pets/{id}` | Atualiza todas as informações do pet |
+| `PATCH` | `/pets/{id}/status` | Atualiza apenas o status do pet |
+| `DELETE` | `/pets/{id}` | Exclui um pet |
+
+---
+
+### 👀 Avistamentos
+
+| Método | Rota | Descrição |
+|:------:|------|------------|
+| `POST` | `/avistamentos` | Registra um novo avistamento |
+| `GET` | `/avistamentos` | Lista avistamentos com filtros (`petId`, `usuarioId`, `descricao`) |
+| `GET` | `/avistamentos/{id}` | Busca avistamento por ID |
+| `DELETE` | `/avistamentos/{id}` | Exclui um avistamento |
+
+---
+
+### 🔔 Notificações
+
+| Método | Rota | Descrição |
+|:------:|------|------------|
+| `GET` | `/notificacoes` | Lista notificações com filtros (`usuarioId`, `avistamentoId`, `lida`) |
+| `GET` | `/notificacoes/{id}` | Busca notificação por ID |
 
 ---
 
@@ -86,10 +120,10 @@ Todas as exceções são tratadas globalmente via `GlobalExceptionHandler`, gara
 
 | Código | Tipo de Erro | Exemplo de Resposta |
 |---------|---------------|--------------------|
-| **400** | Erro de validação (Bean Validation) | `{ "success": false, "message": "nome: O nome do pet é obrigatório." }` |
-| **404** | Entidade não encontrada | `{ "success": false, "message": "Pet não encontrado com ID: 99" }` |
+| **400** | Erro de validação | `{ "success": false, "message": "O nome do pet é obrigatório." }` |
+| **404** | Entidade não encontrada | `{ "success": false, "message": "Pet com ID 99 não foi encontrado." }` |
 | **409** | Violação de integridade | `{ "success": false, "message": "Violação de integridade no banco de dados." }` |
-| **500** | Erro inesperado | `{ "success": false, "message": "Erro inesperado: NullPointerException" }` |
+| **500** | Erro interno | `{ "success": false, "message": "Erro inesperado: NullPointerException" }` |
 
 ## 🚀 Tecnologias Utilizadas
 
