@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "ca0e021a-768c-4cde-95c9-a560c6c45afc",
+		"name": "EncontreSeuPet Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18313042"
+	},
+	"item": [
+		{
+			"name": "Pets",
+			"item": [
+				{
+					"name": "Criar Pet Perdido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"puff\",\n    \"especie\": \"Cachorro\",\n    \"raca\": \"Golden Retriever\",\n    \"status\": \"PERDIDO\",\n    \"usuarioId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pets",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pets",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pets?usuarioId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pets"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "DESAPARECIDO",
+									"disabled": true
+								},
+								{
+									"key": "usuarioId",
+									"value": "1"
+								},
+								{
+									"key": "status",
+									"value": "ENCONTRADO",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "i,desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Pet por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pets/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pets",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Pet (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Thor\",\r\n  \"especie\": \"Cachorro\",\r\n  \"raca\": \"Golden Retriever\",\r\n  \"status\": \"DESAPARECIDO\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pets/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pets",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Status (patch)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"ENCONTRADO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pets/1/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pets",
+								"1",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir pet",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pets/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pets",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Avistamentos",
+			"item": [
+				{
+					"name": "Criar Avistamento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descricao\": \"Vi um gato parecido com a Luna pr\\u00f3ximo ao parque.\",\n  \"fotoUrl\": \"https://meusite.com/imagens/gato_parque.jpg\",\n  \"dataAvistamento\": \"2025-10-13T15:20:00\",\n  \"verificado\": false,\n  \"usuario\": {\n    \"id\": 3\n  },\n  \"pet\": {\n    \"id\": 1\n  },\n  \"localizacao\": {\n    \"latitude\": -22.509871,\n    \"longitude\": -43.179012,\n    \"endereco\": \"Parque Natural, Petr\\u00f3polis\",\n    \"tipo\": \"AVISTAMENTO\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/avistamentos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"avistamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar avistamentos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descricao\": \"Vi um gato parecido com a Luna pr\\u00f3ximo ao parque.\",\n  \"fotoUrl\": \"https://meusite.com/imagens/gato_parque.jpg\",\n  \"dataAvistamento\": \"2025-10-13T15:20:00\",\n  \"verificado\": false,\n  \"usuario\": {\n    \"id\": 3\n  },\n  \"pet\": {\n    \"id\": 1\n  },\n  \"localizacao\": {\n    \"latitude\": -22.509871,\n    \"longitude\": -43.179012,\n    \"endereco\": \"Parque Natural, Petr\\u00f3polis\",\n    \"tipo\": \"AVISTAMENTO\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/avistamentos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"avistamentos"
+							],
+							"query": [
+								{
+									"key": "petId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "usuarioId",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "descricao",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Avistamento por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/avistamentos/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"avistamentos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Criar Usuário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Lucas Esteves\",\n  \"email\": \"lucas@example.com\",\n  \"senha\": \"123456\",\n  \"telefone\": \"(21) 99999-8888\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Usuário por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Usuarios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir Usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
