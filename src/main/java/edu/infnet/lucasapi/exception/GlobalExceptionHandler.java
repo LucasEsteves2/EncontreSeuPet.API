@@ -8,11 +8,11 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +25,20 @@ public class GlobalExceptionHandler {
             AvistamentoException.class
     })
     public ResponseEntity<ApiResponseDto<Void>> handleDomainExceptions(RuntimeException ex) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponseDto.fail(ex.getMessage()));
+        List<String> messages = null;
+
+        if (ex instanceof PetException petEx)
+            messages = petEx.getMessages();
+        else if (ex instanceof UsuarioException usuEx)
+            messages = usuEx.getMessages();
+        else if (ex instanceof AvistamentoException aviEx)
+            messages = aviEx.getMessages();
+
+        if (messages == null || messages.isEmpty())
+            messages = Collections.singletonList(ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponseDto.fail(messages));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -38,16 +49,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponseDto<Void>> handleValidationErrors(MethodArgumentNotValidException ex) {
-        List<String> messages = ex.getBindingResult()
+        List<String> mensagens = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(FieldError::getDefaultMessage)
+                .map(e -> e.getDefaultMessage())
                 .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponseDto.fail(messages));
+                .body(ApiResponseDto.fail(mensagens));
     }
-
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponseDto<Void>> handleConstraintErrors(DataIntegrityViolationException ex) {

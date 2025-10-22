@@ -4,54 +4,61 @@ import edu.infnet.lucasapi.domain.exception.AvistamentoException;
 import edu.infnet.lucasapi.domain.model.Avistamento;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class AvistamentoValidator {
 
     public void validarCriacao(Avistamento avistamento) {
 
         if (avistamento == null)
-            throw new AvistamentoException("O avistamento não pode ser nulo.");
+            throw AvistamentoException.invalido(List.of("O avistamento não pode ser nulo."));
 
-        validarUsuario(avistamento);
-        validarPet(avistamento);
-        validarLocalizacao(avistamento);
-    }
+        List<String> erros = new ArrayList<>();
 
-    private void validarUsuario(Avistamento avistamento) {
-        var usuario = avistamento.getUsuario();
-
-        if (usuario == null)
-            throw new AvistamentoException("O usuário do avistamento é obrigatório.");
-
-        if (usuario.getId() == null)
-            throw new AvistamentoException("O ID do usuário é obrigatório.");
-    }
-
-    private void validarPet(Avistamento avistamento) {
-        var pet = avistamento.getPet();
-
-        if (pet == null)
-            throw new AvistamentoException("O pet do avistamento é obrigatório.");
-
-        if (pet.getId() == null)
-            throw new AvistamentoException("O ID do pet é obrigatório.");
-
-        if (pet.getUsuario() != null && pet.getUsuario().getId() != null &&
-                pet.getUsuario().getId().equals(avistamento.getUsuario().getId())) {
-            throw new AvistamentoException("O dono do pet não pode registrar avistamentos do próprio animal.");
+        if (avistamento.getUsuario() == null) {
+            erros.add("O usuário do avistamento é obrigatório.");
+        } else if (avistamento.getUsuario().getId() == null) {
+            erros.add("O ID do usuário é obrigatório.");
         }
+
+        if (avistamento.getPet() == null) {
+            erros.add("O pet do avistamento é obrigatório.");
+        } else {
+            var pet = avistamento.getPet();
+
+            if (pet.getId() == null)
+                erros.add("O ID do pet é obrigatório.");
+
+            if (pet.getUsuario() != null &&
+                    pet.getUsuario().getId() != null &&
+                    avistamento.getUsuario() != null &&
+                    pet.getUsuario().getId().equals(avistamento.getUsuario().getId())) {
+                erros.add("O dono do pet não pode registrar avistamentos do próprio animal.");
+            }
+        }
+
+
+        if (avistamento.getLocalizacao() == null) {
+            erros.add("A localização do avistamento é obrigatória.");
+        } else {
+            var loc = avistamento.getLocalizacao();
+
+            if (loc.getLatitude() == null || loc.getLongitude() == null)
+                erros.add("Latitude e longitude são obrigatórias.");
+
+            if (loc.getEndereco() == null)
+                erros.add("O endereço completo é obrigatório para registrar um avistamento.");
+            else if (isVazio(loc.getEndereco().getCep()))
+                erros.add("O CEP é obrigatório e deve estar presente no endereço.");
+        }
+
+        if (!erros.isEmpty())
+            throw AvistamentoException.invalido(erros);
     }
 
-    private void validarLocalizacao(Avistamento avistamento) {
-        var loc = avistamento.getLocalizacao();
-
-        if (loc == null)
-            throw new AvistamentoException("A localização do avistamento é obrigatória.");
-
-        if (loc.getLatitude() == null || loc.getLongitude() == null)
-            throw new AvistamentoException("Latitude e longitude são obrigatórias.");
-
-        if (loc.getEndereco() == null)
-            throw new AvistamentoException("O endereço completo é obrigatório para registrar um avistamento.");
+    private boolean isVazio(String valor) {
+        return valor == null || valor.isBlank();
     }
 }

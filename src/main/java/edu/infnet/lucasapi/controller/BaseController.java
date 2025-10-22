@@ -34,7 +34,7 @@ public abstract class BaseController {
         return ResponseEntity.noContent().build();
     }
 
-    protected <T> ResponseEntity<ApiResponseDto<T>> fail(String message) {
-        return ResponseEntity.badRequest().body(ApiResponseDto.fail(message));
+    protected <T> ResponseEntity<ApiResponseDto<T>> fail(List<String> messages) {
+        return ResponseEntity.badRequest().body(ApiResponseDto.fail(messages));
     }
 }

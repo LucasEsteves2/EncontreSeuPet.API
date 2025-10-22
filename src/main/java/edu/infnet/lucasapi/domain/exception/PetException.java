@@ -1,24 +1,33 @@
 package edu.infnet.lucasapi.domain.exception;
 
+import java.util.List;
+
 public class PetException extends RuntimeException {
 
-    private PetException(String mensagem) {
-        super(mensagem);
+    private final List<String> messages;
+
+    private PetException(List<String> messages) {
+        super(messages != null && !messages.isEmpty() ? messages.get(0) : null);
+        this.messages = messages;
+    }
+
+    public static PetException invalido(List<String> mensagens) {
+        return new PetException(mensagens);
     }
 
     public static PetException naoEncontrado(Long id) {
-        return new PetException("Pet com ID " + id + " não foi encontrado.");
-    }
-
-    public static PetException invalido(String motivo) {
-        return new PetException("Pet inválido: " + motivo);
+        return new PetException(List.of("Pet com ID " + id + " não foi encontrado."));
     }
 
     public static PetException statusInvalido(String detalhe) {
-        return new PetException("Status inválido: " + detalhe);
+        return new PetException(List.of("Status inválido: " + detalhe));
     }
 
     public static PetException jaCadastrado(String nome) {
-        return new PetException("Já existe um pet cadastrado com o nome '" + nome + "'.");
+        return new PetException(List.of("Já existe um pet cadastrado com o nome '" + nome + "'."));
+    }
+
+    public List<String> getMessages() {
+        return messages;
     }
 }

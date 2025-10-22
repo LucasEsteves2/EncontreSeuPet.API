@@ -21,9 +21,9 @@ public class ApiResponseDto<T> {
     private Integer page;
     private Integer totalPages;
     private Integer size;
+    private String errorMessage;
     private T data;
-    private String message;
-    private List<String> messages;
+    private List<String> errorMessages;
 
     public static <T> ApiResponseDto<T> success(T data) {
         Long count = (data instanceof Collection<?>)
@@ -40,7 +40,7 @@ public class ApiResponseDto<T> {
     public static <T> ApiResponseDto<List<T>> success(Page<T> page) {
         long count = page.getNumberOfElements();
 
-        ApiResponseDto.ApiResponseDtoBuilder<List<T>> builder = ApiResponseDto.<List<T>>builder()
+        var builder = ApiResponseDto.<List<T>>builder()
                 .success(true)
                 .count(count)
                 .data(page.getContent());
@@ -54,17 +54,17 @@ public class ApiResponseDto<T> {
         return builder.build();
     }
 
-    public static <T> ApiResponseDto<T> fail(String message) {
-        return ApiResponseDto.<T>builder()
-                .success(false)
-                .message(message)
-                .build();
-    }
-
     public static <T> ApiResponseDto<T> fail(List<String> messages) {
         return ApiResponseDto.<T>builder()
                 .success(false)
-                .messages(messages)
+                .errorMessages(messages)
+                .build();
+    }
+
+    public static <T> ApiResponseDto<T> fail(String message) {
+        return ApiResponseDto.<T>builder()
+                .success(false)
+                .errorMessage(message)
                 .build();
     }
 }
