@@ -1,8 +1,8 @@
 package edu.infnet.lucasapi;
 
-import edu.infnet.lucasapi.service.AvistamentoService;
-import edu.infnet.lucasapi.service.PetService;
-import edu.infnet.lucasapi.service.UsuarioService;
+import edu.infnet.lucasapi.application.service.AvistamentoService;
+import edu.infnet.lucasapi.application.service.PetService;
+import edu.infnet.lucasapi.application.service.UsuarioService;
 import edu.infnet.lucasapi.domain.enums.StatusPet;
 import edu.infnet.lucasapi.domain.enums.TipoLocalizacao;
 import edu.infnet.lucasapi.domain.model.*;
