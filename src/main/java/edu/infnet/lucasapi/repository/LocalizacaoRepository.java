@@ -10,6 +10,5 @@ import java.util.List;
 
 @Repository
 public interface LocalizacaoRepository extends JpaRepository<Localizacao, Long>, JpaSpecificationExecutor<Localizacao> {
-
     List<Localizacao> findByTipo(String tipo);
 }

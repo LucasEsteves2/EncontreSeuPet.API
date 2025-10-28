@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public interface AvistamentoRepository extends JpaRepository<Avistamento, Long>, JpaSpecificationExecutor<Avistamento> {
-
     List<Avistamento> findByPetId(Long petId);
-
     List<Avistamento> findByUsuarioId(Long usuarioId);
 }

@@ -62,6 +62,7 @@ public class PetController extends BaseController {
         return ok(PetResponseDto.fromEntity(atualizado));
     }
 
+
     @PatchMapping("/{id}/status")
     public ResponseEntity<ApiResponseDto<PetResponseDto>> atualizarStatus(
             @PathVariable Long id,

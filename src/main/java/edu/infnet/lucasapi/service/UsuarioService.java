@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsuarioService extends BaseCrudService<Usuario, Long> {
 
@@ -28,6 +30,13 @@ public class UsuarioService extends BaseCrudService<Usuario, Long> {
         return usuario;
     }
 
+    public List<Usuario> buscarPorNome(String nome) {
+        return usuarioRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
+    public List<Usuario> buscarPorEmailParcial(String emailFragment) {
+        return usuarioRepository.findByEmailContainingIgnoreCase(emailFragment);
+    }
 
     public Page<Usuario> buscarComFiltros(Pageable pageable, String nome, String email, String telefone) {
         var filtros = criarFiltros(nome, email, telefone);
