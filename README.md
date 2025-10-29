@@ -79,6 +79,35 @@ Acesse em: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/s
 | `GET` | `/avistamentos/{id}` | Busca avistamento por ID |
 | `DELETE` | `/avistamentos/{id}` | Exclui um avistamento |
 
+### 📬 Integração com ViaCEP
+
+Ao registrar um novo avistamento (`POST /avistamentos`), a API consome o serviço **ViaCEP**
+para obter automaticamente o endereço completo com base no CEP informado pelo usuário.
+
+Exemplo:
+```json
+POST /avistamentos
+{
+  "endereco": {
+    "numero": "45",
+    "cep": "21665100"
+  }
+}
+```
+Exemplo de resposta gerada automaticamente pela API
+```json
+{
+  "endereco": {
+    "rua": "Rua Lagoa Real",
+    "numero": "45",
+    "bairro": "Guadalupe",
+    "cidade": "Rio de Janeiro",
+    "estado": "RJ",
+    "cep": "21665100"
+  }
+```
+
+
 ---
 
 ### 🔔 Notificações
@@ -165,6 +194,9 @@ Todas as exceções são tratadas globalmente via `GlobalExceptionHandler`, gara
 - **Spring Data JPA / Hibernate**
 - **Jakarta Validation**
 - **Lombok**
-- **Banco de dados H2 (para ambiente de desenvolvimento)**
-- **Maven** como gerenciador de dependências
-
+- **Banco de dados H2** (para ambiente de desenvolvimento)
+- **Maven**
+- **Swagger UI** 
+- **API ViaCEP** 
+- **IntelliJ IDEA**
+---
