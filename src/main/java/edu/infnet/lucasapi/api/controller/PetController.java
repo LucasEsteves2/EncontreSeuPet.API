@@ -2,6 +2,7 @@ package edu.infnet.lucasapi.api.controller;
 
 import edu.infnet.lucasapi.api.request.AtualizarStatusPetRequest;
 import edu.infnet.lucasapi.api.request.PetRequest;
+import edu.infnet.lucasapi.api.request.PetUpdateRequest;
 import edu.infnet.lucasapi.api.response.ApiResponse;
 import edu.infnet.lucasapi.api.response.PetDetailResponse;
 import edu.infnet.lucasapi.api.response.PetResponse;
@@ -57,9 +58,8 @@ public class PetController extends BaseController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<PetResponse>> atualizar(
             @PathVariable Long id,
-            @RequestBody @Valid PetRequest request)
+            @RequestBody @Valid PetUpdateRequest request)
     {
-
         var atualizado = petService.atualizar(id, request.toEntity());
         return ok(PetResponse.fromEntity(atualizado));
     }

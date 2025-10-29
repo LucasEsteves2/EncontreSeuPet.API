@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"puff\",\n    \"especie\": \"Cachorro\",\n    \"raca\": \"Golden Retriever\",\n    \"status\": \"PERDIDO\",\n    \"usuarioId\": 1\n}"
+							"raw": "{\n    \"nome\": \"puff\",\n    \"especie\": \"Cachorro\",\n    \"raca\": \"Golden Retriever\",\n    \"status\": \"perdido\",\n    \"usuarioId\": 1\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/pets",
@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/pets?usuarioId=1",
+							"raw": "{{baseUrl}}/pets",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -61,7 +61,8 @@
 								},
 								{
 									"key": "usuarioId",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "status",
@@ -123,7 +124,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"Thor\",\r\n  \"especie\": \"Cachorro\",\r\n  \"raca\": \"Golden Retriever\",\r\n  \"status\": \"DESAPARECIDO\"\r\n}\r\n",
+							"raw": "{\r\n  \"nome\": \"aaaaa\",\r\n  \"especie\": \"Cachorro\",\r\n  \"raca\": \"Golden Retriever\",\r\n  \"status\": \"DESAPARECIDO\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,7 +217,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"descricao\": \"Vi um gato parecido com a Luna pr\\u00f3ximo ao parque.\",\n  \"fotoUrl\": \"https://meusite.com/imagens/gato_parque.jpg\",\n  \"dataAvistamento\": \"2025-10-13T15:20:00\",\n  \"verificado\": false,\n  \"usuario\": {\n    \"id\": 3\n  },\n  \"pet\": {\n    \"id\": 1\n  },\n  \"localizacao\": {\n    \"latitude\": -22.509871,\n    \"longitude\": -43.179012,\n    \"endereco\": \"Parque Natural, Petr\\u00f3polis\",\n    \"tipo\": \"AVISTAMENTO\"\n  }\n}"
+							"raw": "{\n  \"descricao\": \"Gato visto correndo próximo ao parque.\",\n  \"fotoUrl\": \"https://meusite.com/imagens/avistamento1.jpg\",\n  \"petId\": 1,\n  \"usuarioId\": 2,\n  \"localizacao\": {\n    \"latitude\": -22.5113,\n    \"longitude\": -43.1775,\n    \"tipo\": \"RUA\",\n    \"endereco\": {\n      \"numero\": \"45\",\n      \"cep\": \"21665100\"\n    }\n  }\n}\n"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/avistamentos",
@@ -316,7 +317,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Lucas Esteves\",\n  \"email\": \"lucas@example.com\",\n  \"senha\": \"123456\",\n  \"telefone\": \"(21) 99999-8888\"\n}"
+							"raw": "{\n  \"nome\": \"Lucas Esteve2s\",\n  \"email\": \"lucas2@example.com\",\n  \"senha\": \"123456\",\n  \"telefone\": \"(21) 99999-8888\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/usuarios",

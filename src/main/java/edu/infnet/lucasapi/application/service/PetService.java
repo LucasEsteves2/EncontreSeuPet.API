@@ -46,11 +46,11 @@ public class PetService extends BaseCrudService<Pet, Long> {
     @Override
     public Pet atualizar(Long id, Pet petAtualizado) {
         var pet = petRepository.findById(id).orElseThrow(() -> PetException.naoEncontrado(id));
+        petAtualizado.setUsuario(pet.getUsuario());
 
         petValidator.validarAtualizacao(pet, petAtualizado);
 
         petAtualizado.setId(pet.getId());
-        petAtualizado.setUsuario(pet.getUsuario());
         petAtualizado.setAvistamentos(pet.getAvistamentos());
 
         return super.atualizar(id, petAtualizado);
