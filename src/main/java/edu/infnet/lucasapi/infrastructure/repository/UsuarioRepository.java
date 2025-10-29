@@ -14,6 +14,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>, JpaSpec
     @Override
     @EntityGraph(attributePaths = {"pets", "avistamentos", "notificacoes"})
     Optional<Usuario> findById(Long id);
-    List<Usuario> findByNomeContainingIgnoreCase(String nome);
-    List<Usuario> findByEmailContainingIgnoreCase(String emailFragment);
+
+    //Contempla A FEATURE 4 (5.  Uso aprofundado de Query Methods)
+    List<Usuario> findByNomeContainingIgnoreCase(String nomeContains);
+
+    List<Usuario> findByEmailContainingIgnoreCase(String emailContains);
+
+    List<Usuario> findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCase(String nomeContains, String emailContains);
+
+
 }

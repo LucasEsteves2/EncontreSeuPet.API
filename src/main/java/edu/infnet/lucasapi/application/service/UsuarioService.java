@@ -30,13 +30,22 @@ public class UsuarioService extends BaseCrudService<Usuario, Long> {
         return usuario;
     }
 
-    public List<Usuario> buscarPorNome(String nome) {
-        return usuarioRepository.findByNomeContainingIgnoreCase(nome);
+    public List<Usuario> buscarUsuarios(String nomeContains, String emailContains) {
+
+        if (nomeContains != null && emailContains != null) {
+            return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCase(nomeContains, emailContains);
+        }
+        else if (nomeContains != null) {
+            return usuarioRepository.findByNomeContainingIgnoreCase(nomeContains);
+        }
+        else if (emailContains != null) {
+            return usuarioRepository.findByEmailContainingIgnoreCase(emailContains);
+        }
+
+        return List.of();
     }
 
-    public List<Usuario> buscarPorEmailParcial(String emailFragment) {
-        return usuarioRepository.findByEmailContainingIgnoreCase(emailFragment);
-    }
+
 
     public Page<Usuario> buscarComFiltros(Pageable pageable, String nome, String email, String telefone) {
         var filtros = criarFiltros(nome, email, telefone);
@@ -60,4 +69,5 @@ public class UsuarioService extends BaseCrudService<Usuario, Long> {
 
         return filtros;
     }
+
 }

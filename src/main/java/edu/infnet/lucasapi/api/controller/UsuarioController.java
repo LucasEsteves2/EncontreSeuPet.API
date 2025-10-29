@@ -52,4 +52,22 @@ public class UsuarioController extends BaseController {
         var usuarios = usuarioService.buscarComFiltros(pageable, nome, email, telefone).map(UsuarioResponse::fromEntity);
         return ok(usuarios);
     }
+
+    //   FEATURE 4
+
+    @GetMapping("/buscar")
+    public ResponseEntity<ApiResponse<List<UsuarioResponse>>> buscarUsuarios(
+            @RequestParam(required = false) String nomeContains,
+            @RequestParam(required = false) String emailContains
+    ) {
+        var usuarios = usuarioService.buscarUsuarios(nomeContains, emailContains)
+                .stream()
+                .map(UsuarioResponse::fromEntity)
+                .toList();
+
+        return ok(usuarios);
+    }
+
+
 }
+
