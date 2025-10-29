@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.lang.reflect.ParameterizedType;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -34,7 +36,8 @@ public abstract class BaseCrudService<T, ID> implements BaseService<T, ID> {
 
     @Override
     public T buscarPorId(ID id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(getEntityName() + " não encontrado para o ID: " + id));
     }
 
     @Override
@@ -55,5 +58,14 @@ public abstract class BaseCrudService<T, ID> implements BaseService<T, ID> {
     public void excluir(ID id) {
         T entidade = buscarPorId(id);
         repository.delete(entidade);
+    }
+
+    protected String getEntityName() {
+        var genericSuperclass = getClass().getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType parameterizedType) {
+            Class<?> entityClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            return entityClass.getSimpleName();
+        }
+        return "Recurso";
     }
 }

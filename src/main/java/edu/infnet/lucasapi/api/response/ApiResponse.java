@@ -21,9 +21,9 @@ public class ApiResponse<T> {
     private Integer page;
     private Integer totalPages;
     private Integer size;
-    private String errorMessage;
+    private String message;
     private T data;
-    private List<String> errorMessages;
+    private List<String> messages;
 
     public static <T> ApiResponse<T> success(T data) {
         Long count = (data instanceof Collection<?>)
@@ -57,14 +57,14 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> fail(List<String> messages) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .errorMessages(messages)
+                .messages(messages)
                 .build();
     }
 
     public static <T> ApiResponse<T> fail(String message) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .errorMessage(message)
+                .message(message)
                 .build();
     }
 }
