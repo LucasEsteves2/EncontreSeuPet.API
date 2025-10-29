@@ -44,11 +44,14 @@ public class PetController extends BaseController {
             @RequestParam(required = false) StatusPet status,
             @RequestParam(required = false) Long usuarioId,
             @RequestParam(required = false) String raca,
-            Pageable pageable
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "99") Integer size,
+            @RequestParam(required = false, defaultValue = "id,asc") String sort
     )
     {
-        var page = petService.buscarComFiltros(pageable, status, usuarioId, raca).map(PetResponse::fromEntity);
-        return ok(page);
+        Pageable pageable = buildPageable(page, size, sort);
+        var pets = petService.buscarComFiltros(pageable, status, usuarioId, raca).map(PetResponse::fromEntity);
+        return ok(pets);
     }
 
     @PutMapping("/{id}")

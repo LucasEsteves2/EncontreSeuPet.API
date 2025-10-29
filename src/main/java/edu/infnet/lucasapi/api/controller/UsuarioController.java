@@ -44,13 +44,12 @@ public class UsuarioController extends BaseController {
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String telefone,
-            Pageable pageable
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "99") Integer size,
+            @RequestParam(required = false, defaultValue = "id,asc") String sort
     ) {
-        var page = usuarioService.buscarComFiltros(pageable, nome, email, telefone)
-                .map(UsuarioResponse::fromEntity);
-        return ok(page);
+        Pageable pageable = buildPageable(page, size, sort);
+        var usuarios = usuarioService.buscarComFiltros(pageable, nome, email, telefone).map(UsuarioResponse::fromEntity);
+        return ok(usuarios);
     }
-
-
-
 }

@@ -30,10 +30,14 @@ public class NotificacaoController extends BaseController {
             @RequestParam(required = false) Long usuarioId,
             @RequestParam(required = false) Long avistamentoId,
             @RequestParam(required = false) Boolean lida,
-            Pageable pageable
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "99") Integer size,
+            @RequestParam(required = false, defaultValue = "id,asc") String sort
     ) {
-        var page = notificacaoService.buscarComFiltros(pageable, usuarioId, avistamentoId, lida)
+        Pageable pageable = buildPageable(page, size, sort);
+
+        var notificacoes = notificacaoService.buscarComFiltros(pageable, usuarioId, avistamentoId, lida)
                 .map(NotificacaoResponse::fromEntity);
-        return ok(page);
+        return ok(notificacoes);
     }
 }

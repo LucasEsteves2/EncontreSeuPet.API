@@ -40,13 +40,17 @@ public class AvistamentoController extends BaseController {
             @RequestParam(required = false) Long petId,
             @RequestParam(required = false) Long usuarioId,
             @RequestParam(required = false) String descricao,
-            Pageable pageable
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "99") Integer size,
+            @RequestParam(required = false, defaultValue = "id,asc") String sort
     )
     {
-        var page = avistamentoService.buscarComFiltros(pageable, petId, usuarioId, descricao)
+        Pageable pageable = buildPageable(page, size, sort);
+
+        var avistamentos = avistamentoService.buscarComFiltros(pageable, petId, usuarioId, descricao)
                 .map(AvistamentoResponse::fromEntity);
 
-        return ok(page);
+        return ok(avistamentos);
     }
 
     @DeleteMapping("/{id}")
