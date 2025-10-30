@@ -34,7 +34,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public OpenApiCustomizer swaggerPageableCustomizer() {  // <-- nome diferente
+    public OpenApiCustomizer swaggerPageableCustomizer() {
         return openApi -> {
             Components components = openApi.getComponents();
             Schema<?> pageableSchema = new Schema<>()
