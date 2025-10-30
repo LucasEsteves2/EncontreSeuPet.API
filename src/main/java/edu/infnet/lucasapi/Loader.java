@@ -8,6 +8,7 @@ import edu.infnet.lucasapi.domain.enums.TipoLocalizacao;
 import edu.infnet.lucasapi.domain.model.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -16,6 +17,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
+
+// Professor, usei PostgreSQL via Docker, mas deixei o profile padrão com H2 para rodar sem dependências externas quando voce for rodar.
+@Profile("dev")
 @Component
 public class Loader implements ApplicationRunner {
 
