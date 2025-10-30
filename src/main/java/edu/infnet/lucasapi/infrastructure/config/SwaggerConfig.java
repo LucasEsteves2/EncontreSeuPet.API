@@ -22,18 +22,15 @@ public class SwaggerConfig {
     public OpenAPI lucasApiOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Lucas API - Pets & Usuários")
-                        .description("API do sistema de gerenciamento de pets e usuários (Spring Boot)")
+                        .title("EncontreSeuPet API")
+                        .description("API desenvolvida em **Spring Boot** como parte da **pós-graduação em Arquitetura de Software do Instituto Infnet**.  \n" +
+                                "O sistema tem como objetivo auxiliar na **busca, registro e acompanhamento de pets desaparecidos**, conectando pessoas que perderam seus animais com quem os encontrou.")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("Lucas Esteves de Abreu Rodrigues")
-                                .email("lucas.esteves@exemplo.com"))
+                                .email("lucasesteves5304@gmail.com"))
                         .license(new License()
-                                .name("Apache 2.0")
-                                .url("http://springdoc.org")))
-                .externalDocs(new ExternalDocumentation()
-                        .description("Documentação completa do projeto")
-                        .url("https://github.com/lucasesteves"));
+                                .url("http://springdoc.org")));
     }
 
     @Bean
