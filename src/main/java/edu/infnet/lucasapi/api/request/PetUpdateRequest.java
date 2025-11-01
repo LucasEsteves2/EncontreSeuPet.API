@@ -3,33 +3,37 @@ package edu.infnet.lucasapi.api.request;
 import edu.infnet.lucasapi.domain.enums.StatusPet;
 import edu.infnet.lucasapi.domain.model.Pet;
 import edu.infnet.lucasapi.api.validation.ValidEnum;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class PetUpdateRequest {
 
-    @NotBlank(message = "O nome do pet é obrigatório.")
-    @Size(min = 2, max = 80, message = "O nome deve ter entre 2 e 80 caracteres.")
     private String nome;
-
-    @NotBlank(message = "A espécie é obrigatória.")
     private String especie;
-
-    @NotBlank(message = "A raça é obrigatória.")
     private String raca;
 
-    @NotBlank(message = "O status do pet é obrigatório.")
+    @Min(value = 0, message = "A idade do pet não pode ser negativa.")
+    @Max(value = 30, message = "A idade do pet não pode exceder 30 anos.")
+    private Integer idade;
+
+    @PastOrPresent(message = "A data de desaparecimento deve ser no passado ou presente.")
+    private LocalDate desaparecidoEm;
+
     @ValidEnum(enumClass = StatusPet.class)
     private String status;
-
     public Pet toEntity() {
         return Pet.builder()
                 .nome(nome)
                 .especie(especie)
                 .raca(raca)
-                .status(StatusPet.valueOf(status.toUpperCase()))
+                .idade(idade)
+                .desaparecidoEm(desaparecidoEm)
+                .status(status != null ? StatusPet.valueOf(status.toUpperCase()) : null)
                 .build();
     }
 }

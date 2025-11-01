@@ -45,15 +45,14 @@ public class PetService extends BaseCrudService<Pet, Long> {
 
     @Override
     public Pet atualizar(Long id, Pet petAtualizado) {
-        var pet = petRepository.findById(id).orElseThrow(() -> PetException.naoEncontrado(id));
-        petAtualizado.setUsuario(pet.getUsuario());
+        var petExistente = petRepository.findById(id).orElseThrow(() -> PetException.naoEncontrado(id));
+        petAtualizado.setUsuario(petExistente.getUsuario());
 
-        petValidator.validarAtualizacao(pet, petAtualizado);
+        mergePetFields(petExistente, petAtualizado);
 
-        petAtualizado.setId(pet.getId());
-        petAtualizado.setAvistamentos(pet.getAvistamentos());
+        petValidator.validarAtualizacao(petExistente, petAtualizado);
 
-        return super.atualizar(id, petAtualizado);
+        return petRepository.save(petExistente);
     }
 
     public Pet atualizarStatus(Long id, StatusPet novoStatus) {
@@ -84,5 +83,25 @@ public class PetService extends BaseCrudService<Pet, Long> {
                     cb.like(cb.lower(root.get("raca")), "%" + raca.toLowerCase() + "%"));
 
         return filtros;
+    }
+
+    private void mergePetFields(Pet destino, Pet origem) {
+        if (origem.getNome() != null)
+            destino.setNome(origem.getNome());
+
+        if (origem.getEspecie() != null)
+            destino.setEspecie(origem.getEspecie());
+
+        if (origem.getRaca() != null)
+            destino.setRaca(origem.getRaca());
+
+        if (origem.getIdade() != null)
+            destino.setIdade(origem.getIdade());
+
+        if (origem.getDesaparecidoEm() != null)
+            destino.setDesaparecidoEm(origem.getDesaparecidoEm());
+
+        if (origem.getStatus() != null)
+            destino.setStatus(origem.getStatus());
     }
 }

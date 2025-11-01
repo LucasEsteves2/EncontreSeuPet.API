@@ -16,9 +16,10 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
-
-// Professor, usei PostgreSQL via Docker, mas deixei o profile padrão com H2 para rodar sem dependências externas quando voce for rodar.
 @Profile("dev")
 @Component
 public class Loader implements ApplicationRunner {
@@ -26,6 +27,12 @@ public class Loader implements ApplicationRunner {
     private final UsuarioService usuarioService;
     private final PetService petService;
     private final AvistamentoService avistamentoService;
+
+    // --- Simulação em memória (Feature 1) ---
+    private final Map<Integer, Usuario> usuariosMemoria = new ConcurrentHashMap<>();
+    private final Map<Integer, Pet> petsMemoria = new ConcurrentHashMap<>();
+    private final Map<Integer, Avistamento> avistamentosMemoria = new ConcurrentHashMap<>();
+    private final AtomicInteger idSequence = new AtomicInteger(1);
 
     public Loader(UsuarioService usuarioService, PetService petService, AvistamentoService avistamentoService) {
         this.usuarioService = usuarioService;
@@ -35,23 +42,24 @@ public class Loader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        System.out.println("🚀 Iniciando carga automática de dados...");
+        System.out.println("\n=== 🚀 Iniciando carga de dados em memória (Feature 1) ===");
 
-        carregarUsuarios();
-        carregarPets();
-        carregarAvistamentos();
+        carregarUsuariosEmMemoria();
+        carregarPetsEmMemoria();
+        carregarAvistamentosEmMemoria();
 
-        System.out.println("✅ Carga inicial concluída com sucesso!");
+        System.out.println("\n💾 Gravando dados da memória no banco...");
+        salvarNoBanco();
+
+        System.out.println("✅ Carga inicial concluída com sucesso!\n");
     }
 
-    private void carregarUsuarios() throws Exception {
+    private void carregarUsuariosEmMemoria() throws Exception {
         Path arquivo = Path.of("usuarios.csv");
-        if (!Files.exists(arquivo)) return;
 
-        int count = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo.toFile()))) {
-            br.readLine(); // cabeçalho
+            br.readLine();
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
@@ -60,19 +68,17 @@ public class Loader implements ApplicationRunner {
                         .email(dados[1].trim())
                         .senha(dados[2].trim())
                         .build();
-                usuarioService.criar(u);
-                count++;
+
+                int id = idSequence.getAndIncrement();
+                usuariosMemoria.put(id, u);
             }
         }
 
-        System.out.println("👤 Usuários carregados: " + count);
+        System.out.printf("👤 Usuários carregados em memória (Feature 1): %d%n", usuariosMemoria.size());
     }
 
-    private void carregarPets() throws Exception {
+    private void carregarPetsEmMemoria() throws Exception {
         Path arquivo = Path.of("pets.csv");
-        if (!Files.exists(arquivo)) return;
-
-        int count = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo.toFile()))) {
             br.readLine();
@@ -80,7 +86,8 @@ public class Loader implements ApplicationRunner {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
                 Long usuarioId = Long.parseLong(dados[5].trim());
-                Usuario usuario = usuarioService.buscarPorId(usuarioId);
+                Usuario usuario = usuariosMemoria.get(usuarioId.intValue());
+                if (usuario == null) continue;
 
                 Pet p = Pet.builder()
                         .nome(dados[0].trim())
@@ -91,31 +98,28 @@ public class Loader implements ApplicationRunner {
                         .usuario(usuario)
                         .build();
 
-                petService.criar(p);
-                count++;
+                int id = idSequence.getAndIncrement();
+                petsMemoria.put(id, p);
             }
         }
 
-        System.out.println("🐕 Pets carregados: " + count);
+        System.out.printf("🐶 Pets carregados em memória (Feature 1): %d%n", petsMemoria.size());
     }
 
-    private void carregarAvistamentos() throws Exception {
+    private void carregarAvistamentosEmMemoria() throws Exception {
         Path arquivo = Path.of("avistamentos.csv");
-        if (!Files.exists(arquivo)) return;
-
-        int count = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo.toFile()))) {
             br.readLine();
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
-
                 Long petId = Long.parseLong(dados[1].trim());
                 Long usuarioId = Long.parseLong(dados[2].trim());
 
-                Pet pet = petService.buscarPorId(petId);
-                Usuario usuario = usuarioService.buscarPorId(usuarioId);
+                Pet pet = petsMemoria.get(petId.intValue());
+                Usuario usuario = usuariosMemoria.get(usuarioId.intValue());
+                if (pet == null || usuario == null) continue;
 
                 Endereco endereco = Endereco.builder()
                         .rua(dados[5].trim())
@@ -141,11 +145,20 @@ public class Loader implements ApplicationRunner {
                         .dataAvistamento(LocalDateTime.now())
                         .build();
 
-                avistamentoService.criarAvistamento(avistamento, usuarioId, petId);
-                count++;
+                int id = idSequence.getAndIncrement();
+                avistamentosMemoria.put(id, avistamento);
             }
         }
 
-        System.out.println("👀 Avistamentos carregados: " + count);
+        System.out.printf("👀 Avistamentos carregados em memória (Feature 1): %d%n", avistamentosMemoria.size());
+    }
+
+    private void salvarNoBanco() {
+        usuariosMemoria.values().forEach(usuarioService::criar);
+        petsMemoria.values().forEach(petService::criar);
+        avistamentosMemoria.values().forEach(a ->
+                avistamentoService.criarAvistamento(a, a.getUsuario().getId(), a.getPet().getId())
+        );
+        System.out.println("Dados persistidos no banco via services.");
     }
 }

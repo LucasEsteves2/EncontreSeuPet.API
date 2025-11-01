@@ -41,6 +41,9 @@ public class Pet extends BaseEntity {
     @Column(nullable = false, length = 20)
     private StatusPet status;
 
+    @Column(name = "idade")
+    private Integer idade;
+
     @Column(name = "desaparecido_em")
     private LocalDate desaparecidoEm;
 
@@ -60,6 +63,7 @@ public class Pet extends BaseEntity {
                 ", nome='" + nome + '\'' +
                 ", especie='" + especie + '\'' +
                 ", cor='" + cor + '\'' +
+                ", idade=" + idade +
                 ", descricao='" + descricao + '\'' +
                 ", status=" + status +
                 ", usuario=" + (usuario != null ? usuario.getNome() : "null") +
